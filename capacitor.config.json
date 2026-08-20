@@ -1,10 +1,11 @@
-﻿{
+{
   "appId": "com.learnx.app",
   "appName": "LearnX",
   "webDir": "www",
-  "bundledWebRuntime": false,
   "server": {
-    "cleartext": true
+    "url": "https://learn-x-sigma-amber.vercel.app",
+    "cleartext": true,
+    "androidScheme": "https"
   },
   "android": {
     "allowMixedContent": true,

@@ -4,8 +4,7 @@
   "webDir": "www",
   "server": {
     "url": "https://learn-x-sigma-amber.vercel.app",
-    "cleartext": true,
-    "androidScheme": "https"
+    "cleartext": true
   },
   "android": {
     "allowMixedContent": true,

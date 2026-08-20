@@ -1,12 +1,9 @@
-﻿name: Build Android APK
+name: Build Android APK
 
 on:
   push:
     branches: [ main, master ]
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -39,27 +36,12 @@ jobs:
       - name: Build Debug APK
         run: |
           cd android
-          ./gradlew assembleDebug --no-daemon --stacktrace > ../gradle_build.log 2>&1 || true
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: Push Build Log to branch
-        if: always()
+      - name: Prepare APK Output
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b build-logs
-          git add gradle_build.log
-          git commit -m "Upload build log" || true
-          git push -f origin build-logs || true
-
-      - name: Verify and Prepare APK Output
-        run: |
-          if [ ! -f "android/app/build/outputs/apk/debug/app-debug.apk" ]; then
-            echo "❌ APK build failed. Log content:"
-            cat gradle_build.log
-            exit 1
-          fi
           mkdir -p output
-          cp android/app/build/outputs/apk/debug/app-debug.apk output/LearnX.apk
+          find android/app/build/outputs/apk/debug/ -name "*.apk" -exec cp {} output/LearnX.apk \;
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4

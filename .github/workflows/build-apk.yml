@@ -35,19 +35,12 @@ jobs:
 
       - name: Build Debug APK
         working-directory: android
-        run: |
-          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee ../build.log || {
-            echo "### ❌ Build Error Log" >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -n 120 ../build.log >> $GITHUB_STEP_SUMMARY
-            echo '```' >> $GITHUB_STEP_SUMMARY
-            exit 1
-          }
+        run: ./gradlew assembleDebug --no-daemon
 
       - name: Prepare APK Output
         run: |
           mkdir -p output
-          cp android/app/build/outputs/apk/debug/app-debug.apk output/LearnX.apk
+          find android/app/build/outputs/apk/debug/ -name "*.apk" -exec cp {} output/LearnX.apk \;
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
